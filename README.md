@@ -7,6 +7,7 @@ This repository contains reusable GitHub Actions and Workflows. Inspired by (and
 * [Fusion Deploy](#fusion-deploy)
 * [Pr Name Validation](#pr-name-validation)
 * [Tag Container](#tag-container)
+* [Docker build](#docker-build)
 
 ### Fusion Deploy
 
@@ -121,4 +122,38 @@ Example
         tag: ${{ secrets.shortenvname }}
         client-id: ${{ secrets.clientid }}
         client-secret: ${{ secrets.clientsecret }}
+```
+
+### Docker Build
+
+This actions builds a docker container based on Dockerfile, adding a github build identificator as tag, and publishes the container to Azure Container Registry. The action also injects Dynatrace OneAgent at buildtime, which is configurable in each environment. 
+
+_Parameters:_
+* **name:** The app name
+* **build-id:** The unique id of the current build used to retrieve the container
+* **registry**: The URI of the container repository in Azure
+* **registry-repository:** The repository in azure container registry where the container is placed
+* **client-id:** The username or client id to connect to ACR
+* **client-secret:** The password or client secret to use
+* **dynatrace-tenant:** Dynatrace Tenant to use
+* **dynatrace-token:** Dynatrace token to use
+* **dynatrace-url:** Dynatrace url to authenticate against
+* **azure-appconfig:** Connectionstring to Azure App Configuration 
+
+Example
+
+```text
+- name: "Build and publish docker container"
+    uses: equinor/iaf-actions/build-docker-container@v1.0
+    with:
+        name: applicationName
+        build-id: ${{ github.sha }}
+        registry: ${{ secrets.acr_registry }}
+        registry-repository: ${{ secrets.acr_repository }}
+        client-id: ${{ secrets.clientid }}
+        client-secret: ${{ secrets.clientsecret }}
+        dynatrace-tenant: ${{ vars.dynatrace-tenant }}
+        dynatrace-token: ${{ secrets.dynatrace-token }}
+        dynatrace-url: ${{ vars.dynatrace-url }}
+        azure-appconfig: ${{ secrets.appconfig }}
 ```

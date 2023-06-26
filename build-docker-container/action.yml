@@ -1,0 +1,39 @@
+name: "📚 Build and publish Container"
+author: "Eirik Sander-Fjeld"
+description: "Build docker container and publish container to Azure Container Registry"
+inputs:
+    name:
+        description: "The name of the application."
+        required: true
+    build-id:
+        description: "The unique id of the current build used to retrieve the container"
+        required: true
+    registry:
+        description: "The URI of the container repository in Azure"
+        required: false
+    registry-repository:
+        description: "The repository in azure container registry where the container is placed."
+        required: true
+    client-id:
+        description: "The username or client id to connect to ACR"
+        required: true
+    client-secret:
+        description: "The password or client secret to use. "
+        required: true
+    dynatrace-tenant:
+        description: "The Dynatrace Tenant for auth"
+        required: true
+    dynatrace-token:
+        description: "The token for authentication in Dynatrace"
+        required: true
+    dynatrace-url:
+        description: "The Dynatrace Portal Url."
+        required: true
+    azure-appconfig:
+        description: "Connectionstring to Azure AppConfig"
+        required: true
+
+runs:
+    using: "composite"
+    steps: 
+        - 
